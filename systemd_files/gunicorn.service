@@ -1,0 +1,17 @@
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/projects/AWS_production
+EnvironmentFile=/home/ubuntu/projects/AWS_production/.env_gunicorn
+ExecStart=/home/ubuntu/projects/AWS_production/venv/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/gunicorn.sock \
+          new_project.wsgi:application
+[Install]
+WantedBy=multi-user.target
